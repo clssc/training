@@ -244,21 +244,21 @@ function validateFamilyData() {
       $('#p' + i + 'cell_ph').val(cell);
     }
 
-  // Check secondary phone
-  var rawWorkPhone = $('#p' + i + 'work_ph').val().trim();
-  var workPhone = validatePhone(rawWorkPhone);
-  if (workPhone != rawWorkPhone) {
-    result &= false;
-	$('#ptworkph').addClass('error');
-  }
+    // Check secondary phone
+    var rawWorkPhone = $('#p' + i + 'work_ph').val().trim();
+    var workPhone = validatePhone(rawWorkPhone);
+    if (workPhone != rawWorkPhone) {
+      result &= false;
+    	$('#ptworkph').addClass('error');
+    }
 
-  // Check chinese name
-  var rawChineseName = $('#p' + i + 'chn_name').val().trim();
-  var chnName = validateChinese(rawChineseName);
-  if (chnName != rawChineseName) {
-    result &= false;
-	$('#ptchn_name').addClass('error');
-  }
+    // Check chinese name
+    var rawChineseName = $('#p' + i + 'chn_name').val().trim();
+    var chnName = validateChinese(rawChineseName);
+    if (chnName != rawChineseName) {
+      result &= false;
+    	$('#ptchn_name').addClass('error');
+    }
 
     // Check email validity.
     var email = validateEmail($('#p' + i + 'email').val().trim());

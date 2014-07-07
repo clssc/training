@@ -1,0 +1,177 @@
+/**
+ * @fileoverview Parses the HTML template and replace contents.
+ * @author Arthur Hsu (arthurhsu@westsidechineseschool.org)
+ */
+var util = require('./common.js');
+var messageBuilder = require('./message.js');
+var path = require('path');
+var fs = require('fs');
+var cheerio = require('cheerio');
+
+
+/** @const {!Array.<string>} */
+var LANG = [ 'en' ];
+
+
+/** @enum {number} */
+var States = {
+  UNKNOWN: 0,
+  STARTED: 1,
+  REPEAT: 2,
+  ENDREPEAT: 3,
+  SKIP: 4,
+  INCLUDE: 5,
+  CSS: 6,
+  JS: 7,
+  ENDED: 8
+};
+
+
+/**
+ * @param {number} state Current state
+ * @param {string} rawLine The input line
+ * @return {{
+ *   state: number,
+ *   label: ?string,
+ *   line: ?string
+ * }}
+ */
+function getState(state, rawLine) {
+  var result = {
+    state: state,
+    label: null,
+    line: rawLine
+  };
+  var line = rawLine.trim();
+  if (line == '<!-- @@start -->') {
+    result.state = States.STARTED;
+    result.line = null;
+  } else if (line == '<!-- @@end -->') {
+    result.state = States.ENDED;
+    result.line = null;
+  } else if (line.indexOf('<!-- @@include') != -1) {
+    result.state = States.INCLUDE;
+    result.label = util.extractLabel(line);
+  } else if (line.indexOf('<!-- @@skip') != -1) {
+    result.state = States.SKIP;
+    result.label = util.extractLabel(line);
+  } else if (line == '<!-- @@css -->') {
+    result.state = States.CSS;
+    result.line = null;
+  } else if (line == '<!-- @@js -->') {
+    result.state = States.JS;
+    result.line = null;
+  } else if (state >= States.STARTED &&
+      state < States.ENDED && state != States.REPEAT) {
+    result.state = States.STARTED;
+  }
+
+  return result;
+}
+
+
+/**
+ * @param {string} lang
+ * @param {!Array.<string>} output Pre-processed output
+ * @param {!Object} message Message to expand
+ * @return {!Array.<string>} Parsed HTML
+ */
+function replaceMessage(lang, output, message) {
+  $ = cheerio.load(output.join('\n'));
+  $('div').each(function(i) {
+    if (this.attribs['data-name']) {
+      var key = this.attribs['data-name'];
+      this.children[0].data = message[key][lang];
+      delete this.attribs['data-name'];
+    }
+  });
+
+  console.log(lang, $.html());
+  return output;
+}
+
+
+/**
+ * @param {string} file Input file path
+ * @param {!Array.<string>=} opt_css CSS contents to include
+ * @param {!Array.<string>=} opt_js JS contents to include
+ * @return {!Array.<string>} Parsed HTML
+ */
+function parseHtml(file, opt_css, opt_js) {
+  var lines = fs.readFileSync(file, 'utf8').split('\n');
+  var started = false;
+  var output = [];
+
+  var validTransitions = {
+    0: [0, 1],
+    1: [1, 2, 4, 5, 6, 7, 8],
+    2: [2, 3],
+    3: [1],
+    4: [1],
+    5: [1],
+    6: [1],
+    7: [1],
+    8: [8]
+  };
+
+  var state = States.UNKNOWN;
+  for (var i = 0; i < lines.length; ++i) {
+    var result = getState(state, lines[i]);
+    if (validTransitions[state].indexOf(result.state) == -1) {
+      throw new Error('Invalid template file: ' + file);
+    }
+    switch (result.state) {
+      case States.STARTED:
+        if (result.line) {
+          output.push(result.line);
+        }
+        break;
+
+      case States.SKIP:
+        var skip = parseInt(result.label);
+        i += skip;
+        break;
+
+      case States.INCLUDE:
+        var newFile = path.resolve(
+            path.join(path.dirname(file), result.label));
+        output = output.concat(parseHtml(newFile));
+        break;
+
+      case States.CSS:
+        if (opt_css == undefined) {
+          throw new Error('@css specified in ' + file + ' but not provided');
+        }
+        output = output.concat(opt_css);
+        break;
+
+      case States.JS:
+        if (opt_js == undefined) {
+          throw new Error('@js specified in ' + file + ' but not provided');
+        }
+        output = output.concat(opt_js);
+        break;
+    }
+    state = result.state;
+  }
+
+  var messageFile = path.basename(file);
+  messageFile = messageFile.substring(0, messageFile.indexOf('.')) + '.txt';
+  var messagePath = path.join(path.dirname(file), messageFile);
+  var message = messageBuilder.buildMessage(
+      fs.readFileSync(messagePath, 'utf8').split('\n'));
+
+  var html = [];
+  for (var j = 0; j < LANG.length; ++j) {
+    var lang = LANG[j];
+    if (path.extname(file).indexOf('.htm') == -1) {
+      html.push(output);
+    } else {
+      html.push(replaceMessage(lang, output, message));
+    }
+  }
+  return html;
+}
+
+
+exports.parseHtml = parseHtml;

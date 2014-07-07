@@ -5,26 +5,30 @@
  *      --template=<template> The template to process
  *      --css=<CSS> Optional, the CSS file to include
  *      --js=<JS> Optional, the JS file to include
- *      --message=<message file>
  *      --outputdir=<output path> Optional, default to where the template is
+ * Limitation:
+ * 1. All localizable resources must be in DIV
+ * 2. All message files must be in the same directory as templates and named
+ *    with .txt extension
+ * 3. Supports only three languages: EN (English), TC (Traditional Chinese),
+ *    SC (Simplified Chinese)
+ *
  * @author Arthur Hsu (arthurhsu@westsidechineseschool.org)
  *
- * This code requires package yargs.
+ * This code requires package yargs and cheerio.
  */
 var path = require('path');
 var fs = require('fs');
 var argv = require('yargs').argv;
-var messageBuilder = require('./message.js');
+var templateParser = require('./template.js');
 
 
 function argsCheck() {
-  if (!argv.hasOwnProperty('template') ||
-      !argv.hasOwnProperty('message')) {
+  if (!argv.hasOwnProperty('template')) {
     console.log('Usage: node pagegen.js');
     console.log('  --template=<template> The template to process');
     console.log('  --css=<CSS> Optional, the CSS file to include');
     console.log('  --js=<JS> Optional, the JS file to include');
-    console.log('  --message=<message file>');
     console.log('  --outputdir=<output path> Optional, default to where' +
       ' the template is');
     process.exit(1);
@@ -34,12 +38,7 @@ function argsCheck() {
 
 function main() {
   argsCheck();
-
-  var messagePath = path.resolve(argv.message);
-  var lines = fs.readFileSync(messagePath, 'utf8').split('\n');
-  var message = messageBuilder.buildMessage(lines);
-
-  console.log(JSON.stringify(message));
+  var parsedContents = templateParser.parseHtml(path.resolve(argv.template));
 }
 
 main();

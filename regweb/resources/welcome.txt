@@ -12,32 +12,32 @@
 
 @@start{desc}
 @@block{en}
-Welcome to the online registration page of Westside Chinese School.
-
-You will need to print out an application form at the end of the registration, please have your printer ready.
-
-For returning families, please pay at school directly and there's no need to register again online.
-
+Welcome to the online registration page of Westside Chinese School.<br />
+<br />
+You will need to print out an application form at the end of the registration, please have your printer ready.<br />
+<br />
+For returning families, please pay at school directly and there's no need to register again online.<br />
+<br />
 For new families, click Next.
 @@endblock
 
 @@block{tc}
-歡迎使用西區中文學校網路註冊服務。
-
-在註冊的最後步驟，您必須將申請表列印出來，請準備好您的印表機。
-
-舊生家庭請在學校繳費即可，無需網路註冊。
-
+歡迎使用西區中文學校網路註冊服務。<br />
+<br />
+在註冊的最後步驟，您必須將申請表列印出來，請準備好您的印表機。<br />
+<br />
+舊生家庭請在學校繳費即可，無需網路註冊。<br />
+<br />
 新生請按下一步。
 @@endblock
 
 @@block{sc}
-欢迎使用西区中文学校网络注册服务。
-
-在注册的最後步骤，您必须将申请表打印出来，请准备好您的打印机。
-
-旧生家庭请在学校缴费即可，无需网络注册。
-
+欢迎使用西区中文学校网络注册服务。<br />
+<br />
+在注册的最後步骤，您必须将申请表打印出来，请准备好您的打印机。<br />
+<br />
+旧生家庭请在学校缴费即可，无需网络注册。<br />
+<br />
 新生请按下一步。
 @@endblock
 @@end{desc}

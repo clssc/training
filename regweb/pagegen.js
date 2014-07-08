@@ -7,7 +7,8 @@
  *      --js=<JS> Optional, the JS file to include
  *      --outputdir=<output path> Optional, default to where the template is
  * Limitation:
- * 1. All localizable resources must be in DIV
+ * 1. All localizable resources must be in DIV, and the DIV can have only one
+ *    attribute data-name.
  * 2. All message files must be in the same directory as templates and named
  *    with .txt extension
  * 3. Supports only three languages: EN (English), TC (Traditional Chinese),
@@ -15,7 +16,7 @@
  *
  * @author Arthur Hsu (arthurhsu@westsidechineseschool.org)
  *
- * This code requires package yargs and cheerio.
+ * This code requires package yargs.
  */
 var path = require('path');
 var fs = require('fs');
@@ -39,7 +40,19 @@ function argsCheck() {
 function main() {
   argsCheck();
   var parsedContents = templateParser.parseHtml(path.resolve(argv.template));
+  var LANG = templateParser.LANG;
+  var outputDir = path.dirname(path.resolve(argv.template));
+  if (argv.outputdir) {
+    outputDir = path.resolve(outputDir, argv.outputDir);
+  }
+
+  var basename = path.basename(argv.template);
+  basename = basename.substring(0, basename.indexOf('.htm'));
+  var extname = path.extname(argv.template);
+  for (var i = 0; i < LANG.length; ++i) {
+    var filePath = path.join(outputDir, basename + '-' + LANG[i] + extname);
+    fs.writeFileSync(filePath, parsedContents[i], {encoding: 'utf8'});
+  }
 }
 
 main();
-

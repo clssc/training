@@ -6,11 +6,10 @@ var util = require('./common.js');
 var messageBuilder = require('./message.js');
 var path = require('path');
 var fs = require('fs');
-var cheerio = require('cheerio');
 
 
 /** @const {!Array.<string>} */
-var LANG = [ 'en' ];
+var LANG = [ 'en', 'tc', 'sc' ];
 
 
 /** @enum {number} */
@@ -71,23 +70,64 @@ function getState(state, rawLine) {
 
 
 /**
+ * @param {string} line
+ * @return {string} Extracted data-name
+ */
+function getDataName(line) {
+  var data = line.split(/[^A-Za-z0-9_-]/);
+  for (var i = 0; i < data.length; ++i) {
+    if (data[i] == 'data-name') {
+      return data[i + 2];
+    }
+  }
+}
+
+
+/**
  * @param {string} lang
  * @param {!Array.<string>} output Pre-processed output
  * @param {!Object} message Message to expand
- * @return {!Array.<string>} Parsed HTML
+ * @return {string} Parsed HTML
  */
 function replaceMessage(lang, output, message) {
-  $ = cheerio.load(output.join('\n'));
-  $('div').each(function(i) {
-    if (this.attribs['data-name']) {
-      var key = this.attribs['data-name'];
-      this.children[0].data = message[key][lang];
-      delete this.attribs['data-name'];
+  var result = [];
+  var divLevel = 0;
+  for (var i = 0; i < output.length; ++i) {
+    var line = output[i];
+    var match = line.match(/\s+/);
+    var indent = match ? match[0] : '';
+    if (line.indexOf('</div>') != -1 && divLevel > 0) {
+      divLevel--;
+      continue;
     }
-  });
 
-  console.log(lang, $.html());
-  return output;
+    if (line.indexOf('<div') != -1 && line.indexOf('data-name') != -1) {
+      // This div needs to be localized.
+      if (divLevel > 0) {
+        throw new Error('Cannot nest localizable divs');
+      }
+      divLevel = 1;
+      var dataName = getDataName(line);
+
+      if (line.indexOf('</div>') != -1) {
+        // Single line
+        divLevel = 0;
+        result.push(indent + '<div>' + message[dataName][lang] + '</div>');
+      } else {
+        // Block
+        result.push(indent + '<div>');
+        result.push(message[dataName][lang]);
+        result.push(indent + '</div>');
+      }
+      continue;
+    }
+
+    if (divLevel == 0) {
+      result.push(line);
+    }
+  }
+
+  return result.join('\n');
 }
 
 
@@ -98,7 +138,7 @@ function replaceMessage(lang, output, message) {
  * @return {!Array.<string>} Parsed HTML
  */
 function parseHtml(file, opt_css, opt_js) {
-  var lines = fs.readFileSync(file, 'utf8').split('\n');
+  var lines = fs.readFileSync(file, {encoding: 'utf8'}).split('\n');
   var started = false;
   var output = [];
 
@@ -175,3 +215,4 @@ function parseHtml(file, opt_css, opt_js) {
 
 
 exports.parseHtml = parseHtml;
+exports.LANG = LANG;

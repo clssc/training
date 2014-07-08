@@ -94,7 +94,8 @@ function buildMessage(lines) {
           // Beginning of the block
           lang = result.label;
         } else {
-          message[label][lang] += result.message + '<br />';
+          var oldMessage = message[label][lang] || '';
+          message[label][lang] = oldMessage + result.message + '<br />\n';
         }
         break;
 

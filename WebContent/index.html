@@ -34,9 +34,9 @@
 			<p><b>Available Classes</b></p>
 			<p>Art<br />Chess<br />Painting<br />to be continued<br />charles yang wants a pay raise</p>
 		<hr />
-		<form>
-			First name: <input type="text" name="firstname"><br>
-			Last name: <input type="text" name="lastname"><br>
+		<form name="input" action="demo_form_action.asp" method="get">>
+			First Name: <input type="text" name="firstname"><br>
+			Last Name: <input type="text" name="lastname"><br>
 			Chinese School ID: <input type="text" name="Chinese school ID"><br>
 			<br>
 			Extracurricular:
@@ -45,7 +45,12 @@
  					<option value="Chess">Chess</option>
  					<option value="Dance">Dance</option>
 				</select>
+		
+		<input type="submit" value="Submit" onSubmit="console.log(All Form Data)">
+
 		</form>
+
+
 
 		</div>
 		</div>

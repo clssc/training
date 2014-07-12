@@ -71,15 +71,17 @@ function getState(state, rawLine) {
 
 /**
  * @param {string} line
- * @return {string} Extracted data-name
+ * @param {string} attr
+ * @return {?string} Extracted attribute
  */
-function getDataName(line) {
+function getAttribute(line, attr, token) {
   var data = line.split(/[^A-Za-z0-9_-]/);
   for (var i = 0; i < data.length; ++i) {
-    if (data[i] == 'data-name') {
+    if (data[i] == attr) {
       return data[i + 2];
     }
   }
+  return null;
 }
 
 
@@ -107,15 +109,18 @@ function replaceMessage(lang, output, message) {
         throw new Error('Cannot nest localizable divs');
       }
       divLevel = 1;
-      var dataName = getDataName(line);
+      var dataName = getAttribute(line, 'data-name');
+      var className = getAttribute(line, 'class');
 
+      var tag = (className == null) ? '<div>' :
+          '<div class="' + className + '">';
       if (line.indexOf('</div>') != -1) {
         // Single line
         divLevel = 0;
-        result.push(indent + '<div>' + message[dataName][lang] + '</div>');
+        result.push(indent + tag + message[dataName][lang] + '</div>');
       } else {
         // Block
-        result.push(indent + '<div>');
+        result.push(indent + tag);
         result.push(message[dataName][lang]);
         result.push(indent + '</div>');
       }

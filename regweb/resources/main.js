@@ -318,7 +318,7 @@ function validateFamilyData() {
     result &= false;
     $('#ptemer_ph').addClass('error');
   } else {
-    $('#demer_ph').val(emerPh);
+    $('#emer_ph').val(emerPh);
   }
   return result;
 }

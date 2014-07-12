@@ -43,7 +43,7 @@ function main() {
   var LANG = templateParser.LANG;
   var outputDir = path.dirname(path.resolve(argv.template));
   if (argv.outputdir) {
-    outputDir = path.resolve(outputDir, argv.outputDir);
+    outputDir = path.resolve(outputDir, argv.outputdir);
   }
 
   var basename = path.basename(argv.template);

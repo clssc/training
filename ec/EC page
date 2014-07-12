@@ -45,6 +45,8 @@
  					<option value="Chess">Chess</option>
  					<option value="Dance">Dance</option>
 				</select>
+				
+				<input type="submit" value="Submit" onSubmit="console.log(All Form Data)">
 		</form>
 		
 		</div>

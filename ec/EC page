@@ -34,10 +34,10 @@
 			<p><b>Available Classes</b></p>
 			<p>Art<br />Chess<br />Painting<br />to be continued<br />charles yang wants a pay raise</p>
 		<hr />
-		<form>
-			First name: <input type="text" name="firstname"><br>
-			Last name: <input type="text" name="lastname"><br>
-			Chinese School ID: <input type="text" name="Chinese school ID"><br>
+		<form name="input" getElementById("firstname") getElementById("lastname") getElementById("Chinese school ID")  onSubmit"console.log(All Form Data)">
+			First Name: <input type="text" id="firstname"></input> <br>
+			Last Name: <input type="text" ide="lastname"></input><br>
+			Chinese School ID: <input type="text" id="Chinese school ID"></input>
 			<br>
 			Extracurricular:
 				<select>
@@ -45,8 +45,9 @@
  					<option value="Chess">Chess</option>
  					<option value="Dance">Dance</option>
 				</select>
-				
-				<input type="submit" value="Submit" onSubmit="console.log(All Form Data)">
+		
+		<input type="submit" value="Submit">
+
 		</form>
 		
 		</div>

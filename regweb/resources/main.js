@@ -1,4 +1,3 @@
-var LANG = ['en', 'tc', 'sc'];
 var STATE = [
   'AL', 'AK',  'AR', 'AS', 'AZ',
   'CO', 'CT',
@@ -28,28 +27,15 @@ var cutoffTimestamp = new Date(2009, 12, 7).getTime();
 var adultTimestamp = new Date(1996, 10, 12).getTime();
 var submission = '';  // Data to submit to server.
 var numAdultStudents = 0;
-var lang = '';
 
 // When the page loads.
 $(function() {
-  $('#progress').dialog({
-    autoOpen: false,
-    resizable: false,
-    modal: true,
-  });
-
-  $('#error').dialog({
-    autoOpen: false,
-    resizable: false,
-    modal: true,
-    buttons: {
-      'OK': function() { $(this).dialog('close'); }
-    }
-  });
+  initDialogs();
 
   // Fill the state dropbox.
   for (var i = 0; i < STATE.length; ++i) {
-    $('#state').append('<option value=' + STATE[i] + '>' + STATE[i] + '</option>');
+    $('#state').append(
+      '<option value=' + STATE[i] + '>' + STATE[i] + '</option>');
   }
   // Date picker.
   for (var i = 1; i <= 4; ++i) {
@@ -62,17 +48,7 @@ $(function() {
     });
   }
 
-  // Navigation buttons.
-  $('#next0').click(function() { showPage(1); });
-  $('#next1').click(function() { showParents(); showPage(2); });
-  $('#next2').click(function() { if (validateFamilyData()) { showStudents(); showPage(3); }});
-  // $('#next2b').click(function() { showStudents(); showPage(3); });
-  $('#next3').click(function() { if (validateStudentData()) { genSummary(); showPage(4); } });
-  // $('#next3b').click(function() { genSummary(); showPage(4); });
-  $('#next4').click(function() { showPage(5); });
-  $('#next5').click(function() { genFinalData(); });
-  $('#prev3').click(function() { showParents(); showPage(2); });
-  $('#prev4').click(function() { showStudents(); showPage(3); });
+  setNavigationHooks();
 
   // Special show-hide related buttons.
   $('#only1p').change(function() {
@@ -87,39 +63,54 @@ $(function() {
   });
   $('#consent').change(function() { toggleLegalStep(); });
 
-  showLangSelector();
-});
-
-function showLangSelector() {
+  // Really starts
   for (var i = 0; i < 7; ++i) {
     var pageId = '#page' + i;
     $(pageId).hide();
   }
-  $('#lang_selector').show();
-  $('#lang_en').click(function() { lang = 'en'; reallyStart(); });
-  $('#lang_tc').click(function() { lang = 'tc'; reallyStart(); });
-  $('#lang_sc').click(function() { lang = 'sc'; reallyStart(); });
-}
-
-function reallyStart() {
   localizeButtons();
   showParents();
   showStudents();
   toggleLegalStep();
   showPage(0);
+});
+
+function initDialogs() {
+  $('#progress').dialog({
+    autoOpen: false,
+    resizable: false,
+    modal: true,
+  });
+
+  $('#error').dialog({
+    autoOpen: false,
+    resizable: false,
+    modal: true,
+    buttons: {
+      'OK': function() { $(this).dialog('close'); }
+    }
+  });
+}
+
+function setNavigationHooks() {
+  // Navigation buttons.
+  $('#next0').click(function() { showPage(1); });
+  $('#next1').click(function() { showParents(); showPage(2); });
+  $('#next2').click(function() {
+    if (validateFamilyData()) { showStudents(); showPage(3); }
+  });
+  // $('#next2b').click(function() { showStudents(); showPage(3); });
+  $('#next3').click(function() {
+    if (validateStudentData()) { genSummary(); showPage(4); } 
+  });
+  // $('#next3b').click(function() { genSummary(); showPage(4); });
+  $('#next4').click(function() { showPage(5); });
+  $('#next5').click(function() { genFinalData(); });
+  $('#prev3').click(function() { showParents(); showPage(2); });
+  $('#prev4').click(function() { showStudents(); showPage(3); });
 }
 
 function showPage(pageNumber) {
-  $('#lang_selector').hide();
-  for (var i = 0; i < LANG.length; ++i) {
-    if (LANG[i] == lang) {
-      $('div.' + LANG[i]).show();
-      $('span.' + LANG[i]).show();
-    } else {
-      $('div.' + LANG[i]).hide();
-      $('span.' + LANG[i]).hide();
-    }
-  }
   for (var i = 0; i < 7; ++i) {
     var pageId = '#page' + i;
     if (i != pageNumber) {

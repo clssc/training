@@ -345,7 +345,7 @@ function validateStudentData() {
     }
 
     // Check DOB is greater than 5 years.
-    var value = $('#s' + i + 'bd').val();
+    var value = $('#s' + i + 'bd').val().toString();
     var dateResult = false;
     if (value.length) {
       var timestamp = 0;
@@ -385,16 +385,16 @@ function validateStudentData() {
 
 function genFamilySummary() {
   var data = {
-    address: $('#addr').val(),
-    city: $('#city').val(),
-    state: $('#state').val(),
-    zip: $('#zip').val(),
-    home_ph: $('#home_ph').val(),
+    address: $('#addr').val().toString(),
+    city: $('#city').val().toString(),
+    state: $('#state').val().toString(),
+    zip: $('#zip').val().toString(),
+    home_ph: $('#home_ph').val().toString(),
 //      fax: $('#fax').val(),
-    doc_name: $('#doc_name').val(),
-    doc_ph: $('#doc_ph').val(),
-    emer_name: $('#emer_name').val(),
-    emer_ph: $('#emer_ph').val(),
+    doc_name: $('#doc_name').val().toString(),
+    doc_ph: $('#doc_ph').val().toString(),
+    emer_name: $('#emer_name').val().toString(),
+    emer_ph: $('#emer_ph').val().toString(),
     video_consent: true
   };
 
@@ -421,12 +421,12 @@ function genParentSummary() {
   var data = [];
   for (var i = 1; i <= numParents; ++i) {
     var item = {
-      eng_name: $('#p' + i + 'eng_name').val(),
-      chn_name: $('#p' + i + 'chn_name').val(),
-      spec: $('#p' + i + 'spec').val(),
-      work_ph: $('#p' + i + 'work_ph').val(),
-      cell_ph: $('#p' + i + 'cell_ph').val(),
-      email: $('#p' + i + 'email').val(),
+      eng_name: $('#p' + i + 'eng_name').val().toString(),
+      chn_name: $('#p' + i + 'chn_name').val().toString(),
+      spec: $('#p' + i + 'spec').val().toString(),
+      work_ph: $('#p' + i + 'work_ph').val().toString(),
+      cell_ph: $('#p' + i + 'cell_ph').val().toString(),
+      email: $('#p' + i + 'email').val().toString(),
       chnlv: $('#p' + i + 'clv0').is(':checked') ? 0 :
              ($('#p' + i + 'clv1').is(':checked') ? 1 : 2)
     };
@@ -470,14 +470,14 @@ function genStudentSummary() {
     var male = '#s' + i + 'gm';
     var scy = '#s' + i + 'sy';
     var item = {
-      last_name: $('#s' + i + 'ln').val(),
-      first_name: $('#s' + i + 'fn').val(),
-      chn_name: $('#s' + i + 'chn').val(),
-      dob: $('#s' + i + 'bd').val(),
+      last_name: $('#s' + i + 'ln').val().toString(),
+      first_name: $('#s' + i + 'fn').val().toString(),
+      chn_name: $('#s' + i + 'chn').val().toString(),
+      dob: $('#s' + i + 'bd').val().toString(),
       gender: $(male).is(':checked') ? 'M' : 'F',
       sch: $(scy).is(':checked') ? 'Y' : 'N',
       pref: $('#s' + i + 'pref').val(),
-      tshirt: $('#s' + i + 'tshirt').val(),
+      tshirt: $('#s' + i + 'tshirt').val().toString(),
       learned: $('#s' + i + 'learned').val()
     };
     data.push(item);

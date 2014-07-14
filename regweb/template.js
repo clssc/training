@@ -168,7 +168,7 @@ function parseHtmlForOneLang(file, lang, opt_css, opt_js) {
     }
     switch (result.state) {
       case States.STARTED:
-        if (result.line) {
+        if (result.line && result.line.indexOf('@@lang') == -1) {
           output.push(result.line);
         }
         break;
@@ -197,7 +197,7 @@ function parseHtmlForOneLang(file, lang, opt_css, opt_js) {
         if (opt_js == undefined) {
           throw new Error('@js specified in ' + file + ' but not provided');
         }
-        output.push('    var lang = \'' + lang + '\';');
+        output.push('var lang = \'' + lang + '\';');
         output = output.concat(opt_js);
         break;
     }

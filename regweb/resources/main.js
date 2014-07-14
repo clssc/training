@@ -79,7 +79,7 @@ function initDialogs() {
   $('#progress').dialog({
     autoOpen: false,
     resizable: false,
-    modal: true,
+    modal: true
   });
 
   $('#error').dialog({

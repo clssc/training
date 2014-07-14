@@ -1,0 +1,9 @@
+How to generate minified main.js
+================================
+Install closurecompiler for nodejs:
+  npm install closurecompiler
+
+Then run this command
+  ccjs main.js --compilation_level=ADVANCED_OPTIMIZATIONS --externs=externs.js
+
+If everything outputs fine, redirect the console to main_mini.js.

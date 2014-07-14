@@ -1,4 +1,4 @@
-﻿var LANG = ['en', 'tc', 'sc'];
+var LANG = ['en', 'tc', 'sc'];
 var STATE = [
   'AL', 'AK',  'AR', 'AS', 'AZ',
   'CO', 'CT',

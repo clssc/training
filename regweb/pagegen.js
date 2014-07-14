@@ -39,7 +39,18 @@ function argsCheck() {
 
 function main() {
   argsCheck();
-  var parsedContents = templateParser.parseHtml(path.resolve(argv.template));
+  var css;
+  if (argv.hasOwnProperty('css')) {
+    var cssPath = path.resolve(argv.css);
+    css = fs.readFileSync(cssPath, {encoding: 'utf8'}).split('\n');
+  }
+  var js;
+  if (argv.hasOwnProperty('js')) {
+    var jsPath = path.resolve(argv.js);
+    js = fs.readFileSync(jsPath, {encoding: 'utf8'}).split('\n');
+  }
+  var parsedContents =
+      templateParser.parseHtml(path.resolve(argv.template), css, js);
   var LANG = templateParser.LANG;
   var outputDir = path.dirname(path.resolve(argv.template));
   if (argv.outputdir) {

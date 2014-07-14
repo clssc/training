@@ -138,11 +138,12 @@ function replaceMessage(lang, output, message) {
 
 /**
  * @param {string} file Input file path
+ * @param {string} lang
  * @param {!Array.<string>=} opt_css CSS contents to include
  * @param {!Array.<string>=} opt_js JS contents to include
- * @return {!Array.<string>} Parsed HTML
+ * @return {string} Parsed HTML
  */
-function parseHtml(file, opt_css, opt_js) {
+function parseHtmlForOneLang(file, lang, opt_css, opt_js) {
   var lines = fs.readFileSync(file, {encoding: 'utf8'}).split('\n');
   var started = false;
   var output = [];
@@ -178,9 +179,11 @@ function parseHtml(file, opt_css, opt_js) {
         break;
 
       case States.INCLUDE:
+        var myState = state;
         var newFile = path.resolve(
             path.join(path.dirname(file), result.label));
-        output = output.concat(parseHtml(newFile));
+        output = output.concat(parseHtmlForOneLang(newFile, lang));
+        result.state = myState;  // Restore state from recursion
         break;
 
       case States.CSS:
@@ -206,14 +209,21 @@ function parseHtml(file, opt_css, opt_js) {
   var message = messageBuilder.buildMessage(
       fs.readFileSync(messagePath, 'utf8').split('\n'));
 
+  return replaceMessage(lang, output, message);
+}
+
+
+/**
+ * @param {string} file Input file path
+ * @param {!Array.<string>=} opt_css CSS contents to include
+ * @param {!Array.<string>=} opt_js JS contents to include
+ * @return {!Array.<string>} Parsed HTML
+ */
+function parseHtml(file, opt_css, opt_js) {
   var html = [];
   for (var j = 0; j < LANG.length; ++j) {
     var lang = LANG[j];
-    if (path.extname(file).indexOf('.htm') == -1) {
-      html.push(output);
-    } else {
-      html.push(replaceMessage(lang, output, message));
-    }
+    html.push(parseHtmlForOneLang(file, lang, opt_css, opt_js));
   }
   return html;
 }

@@ -8,22 +8,21 @@ $(document).ready(function() {
 		var FamilyID = $('input[name=family_id]').val();	
 		var SelectedClass = $("#drop_down_list").val();
 		if (FirstName.length == 0) {
-			$("#fn").append('<p class="errorwarnning">First name should not be empty.</p>');
+			alert("First name should not be empty.");
+			return;
+		} else if (LastName.length == 0) {
+			alert("Last name should not be empty.");
+			return;
+		} else if (FamilyID.length == 0) {
+			alert("Family ID should not be empty.");				
+			return;
+		} else if (null) {
+			alert("Family ID should be an integer.");
+			return;
 		}
-		if (LastName.length == 0) {
-			$("#ln").append('<p class="errorwarnning">Last name should not be empty.</p>');
-		}
-		if (FamilyID.length == 0) {
-			$("#fi").append('<p class="errorwarnning">Family ID should not be empty.</p>');
-		} else if (FamilyID.match(/^d+$/)) {
-			$("#fi").append('<p class="errorwarnning">Family ID should be an integer.</p>');		
-		}			
 		console.log(FirstName);
 		console.log(LastName);
 		console.log(FamilyID);				
 		console.log(SelectedClass);
 	});	
-	$("#button2" ).click(function() {	
-		$(".errorwarnning").remove();			
-	});
 })

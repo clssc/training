@@ -44,10 +44,10 @@ body {
 }
 
 #sign_up_header {
-	color:#003399;
+	color: #bd5353; 
 	font-size:18px;
 	font-weight:bold;
-	text-align:center;
+	text-align:left;
 }
 
 #classes_list_header {
@@ -69,6 +69,3 @@ body {
 	margin-top:2px;
 }
 
-.errorwarnning{
-	color:#cc0000;
-}

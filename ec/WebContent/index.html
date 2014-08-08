@@ -3,6 +3,8 @@
 <head>
 <link type="text/css" rel="stylesheet" href="stylesheet.css"></link>
 <meta charset="UTF-8">
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script type="text/javascript" src="script.js"></script>
 
 <title>Chinese School Extracurricular Page</title>
 </head>
@@ -17,7 +19,7 @@
 
 			<span class="website logo">
 					<a href="westsidechineseschool.weebly.com">
-						<img src="CLSSC logo.png" style="margin-top:73px; padding-left: 7px";  >
+						<img src="CLSSC logo.png" style="margin-top:73px; padding-left: 7px"  >
 					</a>
 			</span>
 
@@ -35,19 +37,19 @@
 			<p><b>Available Classes</b></p>
 			<p>Art<br />Chess<br />Painting<br />to be continued<br />charles yang wants a pay raise</p>
 		<hr />
-		<form name="input" getElementById('firstname')>
-			First Name: <input type="text" id="firstname"></input> <br>
-			Last Name: <input type="text" ide="lastname"></input><br>
-			Chinese School ID: <input type="text" id="Chinese school ID"></input>
+		<form name="input" >
+			First Name: <input type="text" id="first_name"></input> <br>
+			Last Name: <input type="text" id="last_name"></input><br>
+			Chinese School ID: <input type="text" id="chinese_school_ID"></input>
 			<br>
 			Extracurricular:
-				<select>
+				<select id="drop_down_list">
  					<option value="Art">Art</option>
  					<option value="Chess">Chess</option>
  					<option value="Dance">Dance</option>
 				</select>
 		
-		<input type="submit" value="Submit" onSubmit="console.log(All Form Data)">
+		<input type="button" id="button1" value="Submit"></input>
 
 		</form>
 
@@ -55,8 +57,6 @@
 
 		</div>
 		</div>
-	</div>
-
-</div>
+	
 </body>
 </html>

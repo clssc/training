@@ -1,6 +1,6 @@
 $(document).ready(function() {
 	
-	$("#swag" )
+	$("#Swag" )
 	.click(function() {
 		var FirstName = $("#firstname").val();
 		var LastName = $("#lastname").val();

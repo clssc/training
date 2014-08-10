@@ -1,46 +1,56 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="ISO-8859-1">
 <title>New Event</title>
+
+<script src="main.js" type="text/javascript"></script>  
+
+<link rel="stylesheet" type="text/css" href="main.css"></link>
+ 
 </head>
 <body>
-
+ 
 <h1> Start an Event </h1>
-
+ 
+<form id=form>
+ 
 <table border=1 style="width:300px">
 <tr>
-
+ 
   <th>Date</th>
   <th>Start Time</th>
   <th>End Time</th>
-   
+ 
 </tr>
 <tr>
-  <td><input></td>
-  <td><input></td>
-  <td><input></td>
-  
+  <td><input class=input></td>
+  <td><input class=input></td>
+  <td><input class=input></td>
+ 
 </tr>
-</table> 
-
-<p> Event Name <input> </p>
-
-<p> First Name <input> </p>
-
-<p> Last Name  <input> </p>
-
-<p> E-Mail <input> </p>
-
-<p> How many people are needed?<input></p>
-
-<p> Are any extra supplies needed? <input> </p>
-
-<p> Where is the event happening? <input> </p>
-
+</table>
+ 
+<p> Event Name <input class=input> </p>
+ 
+<p> First Name <input class=input> </p>
+ 
+<p> Last Name  <input class=input> </p>
+ 
+<p> E-Mail <input class=input> </p>
+ 
+<p> How many people are needed?<input class=input></p>
+ 
+<p> Are any extra supplies needed? <input class=input> </p>
+ 
+<p> Where is the event happening? <input class=input> </p>
+ 
 <p> Additional Information </p>
-<textarea rows=5 cols=35 id=aboutEvent> </textarea>
-
-<button id=submit onclick = "done()"> Submit </button> 
+<textarea rows=5 cols=35 id=aboutEvent class=input> </textarea>
+ 
+ 
+<button type="button" id="submit" onclick="finish()" > Submit </button>
+<p id="demo"></p>
+</form>   
 </body>
 </html>
+                                   

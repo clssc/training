@@ -20,9 +20,31 @@ $(document).ready(function() {
 			alert("Family ID should be an integer.");
 			return;
 		}
-		console.log(FirstName);
-		console.log(LastName);
-		console.log(FamilyID);				
-		console.log(SelectedClass);
+		
+		//console.log(FirstName);
+		//console.log(LastName);
+		//console.log(FamilyID);				
+		//console.log(SelectedClass);
+		
+		var data = {
+			'firstname': FirstName,
+			'lastname': LastName,
+			'familyid': FamilyID,
+			'selectedclass' : SelectedClass
+		};
+		
+		var messageBody = JSON.stringify(data);
+		console.log('sending', messageBody);
+		$.ajax({
+			type: 'POST',
+			url: 'https://script.google.com/macros/s/AKfycbxgluaOdBMUr0gPjKq5pOOnd3BOYDinxyc0DwNTW6yzGTbu4niO/exec',
+			data: messageBody,
+			dataType: 'text'
+		}).done(function(ok) {
+			alert('server said ' + ok);
+		}).fail(function(err) {
+			alert('server rejected ' + err);
+		});
+				
 	});	
 })
